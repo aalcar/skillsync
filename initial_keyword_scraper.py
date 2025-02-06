@@ -1,3 +1,6 @@
+#####################################
+# this was the first scraper we had #
+#####################################
 import csv
 import pandas as pd
 from jobspy import scrape_jobs
