@@ -15,7 +15,7 @@ def extract_keywords(string, keyword_list):
         found_keywords = [word for word in words if word in keyword_list]
         found_bigrams = [bigram for bigram in bigram_strings if bigram in keyword_list]
 
-        return list(set(found_bigrams + found_keywords))
+        return found_bigrams + found_keywords
     else:
         # If the description is empty returns an empty list. --> we may later change this to remove that data.
         return []
