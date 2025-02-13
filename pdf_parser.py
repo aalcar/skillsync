@@ -38,6 +38,5 @@ df = df.sort_values(by="Count", ascending=False)
 # Display results
 print(df)
 
-
 ################################################################################################
 # we should have this + a way to extract what people have specifically in their skills section #
