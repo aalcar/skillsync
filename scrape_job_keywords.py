@@ -1,14 +1,17 @@
-# pip install -U python-jobspy
+! pip install -U python-jobspy
+!pip install nltk
 
+import nltk
 import csv
 import pandas as pd
 from jobspy import scrape_jobs
-
 # our cool keyword extractor :)
 from keyword_extractor import extract_keywords
 
 # list of technical keywords
 from keywords import technical_keywords_dict
+
+nltk.download('punkt')
 
 search_params = {
     "site_name": ["indeed","linkedin", "zip_recruiter", "google"],
@@ -60,6 +63,6 @@ final_df = pd.merge(job_info_df, job_keywords_df, left_on='id', right_on='job_id
 # Save the results to a CSV
 final_df.to_csv(f'{selected_role.replace("/", "_").replace(" ", "_").lower()}_job_keywords.csv', index=False)
 
-print(f"CSV for {selected_role} created successfully: {selected_role.replace('/', '_').replace(" ", "_").lower()}_job_keywords.csv")
+print(f"CSV for {selected_role} created successfully: {selected_role.replace('/', '_').replace(' ', '_').lower()}_job_keywords.csv")
 
 print(final_df.head(30))
