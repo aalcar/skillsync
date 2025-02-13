@@ -1,40 +1,43 @@
-from pypdf import PdfReader
+# Install required libraries
+!pip install nltk
+!pip install pypdf
+
+import nltk
 import pandas as pd
 import sys
+from collections import Counter
+from pypdf import PdfReader
 from keyword_extractor import extract_keywords
-from keywords import technical_keywords_dict, full_keywords
+from keywords import full_keywords
+from google.colab import files
 
-if len(sys.argv) != 2:
-    print(f"Correct usage: <python> {sys.argv[0]} <path-to-resume>")
-    exit()
+nltk.download('punkt')
+
+# Upload PDF in Google Colab
+uploaded = files.upload()  # User uploads a file
+file_path = list(uploaded.keys())[0]  # Get the uploaded filename
 
 try:
-    # If your resume isn't one page, you're cooked anyways
-    resume = PdfReader(sys.argv[1]).pages[0]
-except FileNotFoundError:
-    print(f"Correct usage: <python> {sys.argv[0]} <path-to-resume>")
-    exit() 
+    # Read all pages of the PDF
+    pdf_reader = PdfReader(file_path)
+    text = " ".join([page.extract_text().lower() for page in pdf_reader.pages if page.extract_text()])
+except Exception as e:
+    print(f"An error occurred: {e}")  # Catch errors
+    sys.exit()
 
-# how is this a method man; this is goated
-text = resume.extract_text().lower()
-
+# Extract keywords
 keywords = extract_keywords(text, full_keywords)
 
-keyword_count = {}
-for keyword in keywords:
-    if keyword in keyword_count:
-        keyword_count[keyword] += 1
-    else:
-        keyword_count[keyword] = 1
+# Count occurrences of keywords
+keyword_count = Counter(keywords)
 
-df = pd.DataFrame({
-    "Keywords": [keyword for keyword in keyword_count],
-    "Count": [count for count in keyword_count.values()]
-    })
-
+# Convert to DataFrame
+df = pd.DataFrame(keyword_count.items(), columns=["Keywords", "Count"])
 df = df.sort_values(by="Count", ascending=False)
 
+# Display results
 print(df)
+
 
 ################################################################################################
 # we should have this + a way to extract what people have specifically in their skills section #
