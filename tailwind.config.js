@@ -1,7 +1,11 @@
+
 import { defineConfig } from 'vite'
 import tailwindcss from '@tailwindcss/vite'
 
-export default defineConfig({
+module.exports = {
+    content: [
+        "./src/**/*/.{js, jsx, ts, tsx",
+    ],
     theme: {
         extend: {
             fontFamily: {
@@ -15,4 +19,14 @@ export default defineConfig({
   plugins: [
     tailwindcss(),
   ],
+}
+
+/*
+import { defineConfig } from 'vite'
+import tailwindcss from '@tailwindcss/vite'
+export default defineConfig({
+  plugins: [
+    tailwindcss(),
+  ],
 })
+*/
