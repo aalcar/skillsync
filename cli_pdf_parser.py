@@ -14,7 +14,6 @@ if len(sys.argv) != 2:
     exit()
 
 try:
-    # If your resume isn't one page, you're cooked anyways
     resume = PdfReader(sys.argv[1])
     text = " ".join([page.extract_text().lower() for page in resume.pages if page.extract_text()])
 except Exception as e:

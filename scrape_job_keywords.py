@@ -1,5 +1,6 @@
-! pip install -U python-jobspy
-!pip install nltk
+# Add these code blocks if you're running it in Google colab
+# ! pip install -U python-jobspy
+# ! pip install nltk
 
 import nltk
 import csv
