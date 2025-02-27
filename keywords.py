@@ -1,6 +1,6 @@
 technical_keywords_dict = {
     "Software Developer/Engineer": [
-        "java", "python", "c++", "javascript", "git", "api", "spring", "django", "react", "angular", "software development", "oop"
+        "java", "python", "c++", "javascript", "git", "api", "spring", "django", "react", "angular", "oop"
     ],
     "Data Scientist": [
         "python", "data analysis", "machine learning", "numpy", "pandas", "sql", "scikit-learn", "deep learning", "hadoop", "spark"

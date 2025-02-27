@@ -3,6 +3,7 @@
 # ! pip install nltk
 
 import nltk
+import ast
 import csv
 import pandas as pd
 from jobspy import scrape_jobs
@@ -10,12 +11,13 @@ from jobspy import scrape_jobs
 from keyword_extractor import extract_keywords
 
 # list of technical keywords
-from keywords import technical_keywords_dict
+from keywords import technical_keywords_dict, full_keywords
 
 nltk.download('punkt')
 
 search_params = {
-    "site_name": ["indeed","linkedin", "zip_recruiter", "google"],
+    #"site_name": ["indeed","linkedin", "zip_recruiter", "google"],
+    "site_name": ["indeed","linkedin", "google"],
     "google_search_term": "software engineer internship",
     "location": "United States",
     "results_wanted": 100,
@@ -30,23 +32,23 @@ print("Available Job Roles: ")
 for role in technical_keywords_dict.keys():
     print(role)
 
-selected_role = input("Please select a job role from the list above: ").strip()
+selected_role = input("Please select a job role from the list above; or don't: ").strip()
 
 # Update the search term with the selected role
-if selected_role in technical_keywords_dict:
-    search_params["search_term"] = f"{selected_role} internship"
-    search_params["google_search_term"] = f"{selected_role} internship"
-else:
-    print("Invalid job role selected.")
-    exit()
-
+search_params["search_term"] = f"{selected_role} internship"
+search_params["google_search_term"] = f"{selected_role} internship"
     
 # Scrape job data using the role user chose.
 jobs = scrape_jobs(**search_params)
 df = pd.DataFrame(jobs)
 
 # using function on the description column.
-role_keywords = technical_keywords_dict[selected_role]
+if selected_role in technical_keywords_dict:
+    role_keywords = technical_keywords_dict[selected_role]
+else:
+    print("Invalid job role selected. Using all keywords.")
+    role_keywords = full_keywords
+
 df['technical_keywords'] = df['description'].apply(lambda x: extract_keywords(x, role_keywords))
 
 # Dictionary with job_id and technical keyword present.
