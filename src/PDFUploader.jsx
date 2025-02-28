@@ -28,7 +28,7 @@ const PdfUploader = () => {
       >
         <input {...getInputProps()} />
         <UploadCloud size={40} className="text-gray-500 mb-2" />
-        <p className="text-gray-700">Drag & drop a PDF or click to upload</p>
+        <p className="text-gray-700">Upload Your Resume Here</p>
       </div>
 
       {file && (
