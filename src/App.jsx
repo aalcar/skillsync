@@ -1,18 +1,24 @@
-import React from 'react';
+import React, { useState } from "react";
 import Header from "./Header";
 import JobSearchBar from "./JobSearchBar";
 
 
 const App = () => {
-  const roles = ['Software Engineer', 'Web Developer', 'Mobile Developer', 'Game Developer', 'Blockchain Developer', 'Data Scientist', 'Data Engineer', 'ML Engineer', 'DevOps Engineer', 'Cloud Architect', 'Security Engineer']
+  const [darkMode, setDarkMode] = useState(false);
+
+  const toggleTheme = () => {
+    setDarkMode((prevMode) => !prevMode);
+    document.body.style.background = darkMode ? "#ffffff" : "#1f2937";
+    document.body.style.color = darkMode ? "#000000" : "#f8f9fa";
+  };
+
   return (
     <div>
-      <Header />
+      <Header darkMode={darkMode} toggleTheme={toggleTheme} />
 
       <main>
-        <JobSearchBar />
+        <JobSearchBar darkMode={darkMode} />
       </main>
-
     </div>
   )
 }
