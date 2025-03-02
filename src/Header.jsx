@@ -1,5 +1,7 @@
 import React from "react";
 import { Moon, Sun } from "lucide-react";
+import logo from "./logo.jpg";
+import logolight from "./logolight.jpg";
 
 const Header = ({ darkMode, toggleTheme }) => {
     return (
@@ -12,9 +14,12 @@ const Header = ({ darkMode, toggleTheme }) => {
             boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
             fontFamily: 'Helvetica, sans-serif'
         }}>
-            <h1 style={{  marginLeft: '20px', fontSize: '2rem', fontWeight: '550', fontFamily: "'Poppins', sans-serif", background: 'linear-gradient(to right, #3b82f6, #9333ea)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', display: 'inline-block' }}>          
-                SkillScalar
-            </h1>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+            <img src={darkMode ? logo : logolight} alt="SkillScalar Logo" style={{ width: "70px", height: "90px" }} />
+                <h1 style={{ fontSize: '2rem', fontWeight: '550', fontFamily: "'Poppins', sans-serif", background: 'linear-gradient(to right, #3b82f6, #9333ea)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', display: 'inline-block' }}>          
+                    SkillScalar
+                </h1>
+            </div>
       
             <nav style={{ display: 'flex', gap: '40px' }}>
                 <a href="#" style={{ color: darkMode ? "#f8f9fa" : "#374151", textDecoration: 'none', fontSize: '1.0rem' }}>Home</a>
@@ -40,7 +45,7 @@ const Header = ({ darkMode, toggleTheme }) => {
                 <button type="submit" style={{ padding: '10px 20px', backgroundColor: darkMode ? "#1f2937" : "#fff", color: darkMode ? " #9F67E0" : "#4285f4", border: darkMode ? "2px solid #9F67E0" : "2px solid #4285f4",  borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}>Sign in</button>
             </div>
         </header>
-    );
-};
+    )
+}
 
-export default Header;
+export default Header
