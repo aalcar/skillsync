@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Header from "./Header";
 import JobSearchBar from "./JobSearchBar";
-
+import JobsForYou from "./JobsForYou"; 
 
 const App = () => {
   const [darkMode, setDarkMode] = useState(false);
@@ -16,10 +16,12 @@ const App = () => {
     <div>
       <Header darkMode={darkMode} toggleTheme={toggleTheme} />
 
-      <main>
+      <main style={{ padding: '20px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         <JobSearchBar darkMode={darkMode} />
+        <JobsForYou /> {}
       </main>
     </div>
-  )
-}
-export default App 
+  );
+};
+
+export default App;
