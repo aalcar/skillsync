@@ -1,26 +1,34 @@
-import React, { useState } from "react";
-import Header from "./Header";
-import JobSearchBar from "./JobSearchBar";
-import JobsForYou from "./JobsForYou"; 
+import React, { useState, useEffect } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import LandingPage from "./LandingPage";
+import Dashboard from "./Dashboard";
+import SignIn from "./SignIn";
+import SignUp from "./SignUp";
 
 const App = () => {
   const [darkMode, setDarkMode] = useState(false);
 
   const toggleTheme = () => {
     setDarkMode((prevMode) => !prevMode);
-    document.body.style.background = darkMode ? "#ffffff" : "#1f2937";
-    document.body.style.color = darkMode ? "#000000" : "#f8f9fa";
   };
 
-  return (
-    <div>
-      <Header darkMode={darkMode} toggleTheme={toggleTheme} />
+  // Apply dark mode to the document body
+  useEffect(() => {
+    document.body.style.background = darkMode ? "#1f2937" : "#ffffff";
+    document.body.style.color = darkMode ? "#f8f9fa" : "#000000";
+  }, [darkMode]);
 
-      <main style={{ padding: '20px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        <JobSearchBar darkMode={darkMode} />
-        <JobsForYou /> {}
+  return (
+    <Router>
+      <main>
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/dashboard" element={<Dashboard darkMode={darkMode} toggleTheme={toggleTheme} />} />
+          <Route path="/signin" element={<SignIn />} />
+          <Route path="/signup" element={<SignUp />} />
+        </Routes>
       </main>
-    </div>
+    </Router>
   );
 };
 
