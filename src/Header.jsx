@@ -1,5 +1,6 @@
 import React from "react";
 import { Moon, Sun } from "lucide-react";
+import { Link } from "react-router-dom";
 import logo from "./logo.jpg";
 import logolight from "./logolight.jpg";
 
@@ -41,8 +42,12 @@ const Header = ({ darkMode, toggleTheme }) => {
                 }}>
                     {darkMode ? <Sun color="#9F67E0" size={25} /> : <Moon color="#374151" size={25} />}
                 </button>
-                <button type="submit" style={{ padding: '10px 20px', backgroundColor: darkMode ? "#1f2937" : "#fff", color: darkMode ? " #9F67E0" : "#4285f4", border: darkMode ? "2px solid #9F67E0" : "2px solid #4285f4",  borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}>Sign up</button>
-                <button type="submit" style={{ padding: '10px 20px', backgroundColor: darkMode ? "#1f2937" : "#fff", color: darkMode ? " #9F67E0" : "#4285f4", border: darkMode ? "2px solid #9F67E0" : "2px solid #4285f4",  borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}>Sign in</button>
+                <Link to="/signup">
+                    <button type="submit" style={{ padding: '10px 20px', backgroundColor: darkMode ? "#1f2937" : "#fff", color: darkMode ? " #9F67E0" : "#4285f4", border: darkMode ? "2px solid #9F67E0" : "2px solid #4285f4",  borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}>Sign up</button>
+                </Link>
+                <Link to="/signin">
+                    <button type="submit" style={{ padding: '10px 20px', backgroundColor: darkMode ? "#1f2937" : "#fff", color: darkMode ? " #9F67E0" : "#4285f4", border: darkMode ? "2px solid #9F67E0" : "2px solid #4285f4",  borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}>Sign in</button>
+                </Link>
             </div>
         </header>
     )
