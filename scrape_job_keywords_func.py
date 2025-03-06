@@ -31,11 +31,22 @@ def scrape_and_save():
     for role in technical_keywords_dict.keys():
         print(role)
 
-    selected_role = input("Please select a job role from the list above; or don't: ").strip()
+    selected_role = input("Please select a job role from the list above: ").strip()
+
+    print("Available Job Types: ")
+    for i in ["fulltime", "parttime", "internship"]:
+        print(i)
+    
+    selected_jobtype = input("Please select a job type from the list above: ").strip()
+
+    selected_location = input("Please select a location where you would like to work: ")
+
 
     # Update the search term with the selected role
     search_params["search_term"] = f"{selected_role} internship"
     search_params["google_search_term"] = f"{selected_role} internship"
+    search_params['job_type'] = f"{selected_jobtype}"
+    search_params['location'] = f"{selected_location}"
         
     # Scrape job data using the role user chose.
     jobs = scrape_jobs(**search_params)
@@ -68,4 +79,6 @@ def scrape_and_save():
     final_df.to_csv(csv_file, index=False)
 
     return csv_file
+
+
 
