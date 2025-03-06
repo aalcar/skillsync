@@ -8,7 +8,7 @@ const Dashboard = ({ darkMode, toggleTheme }) => {
     <div>
       <Header darkMode={darkMode} toggleTheme={toggleTheme} />
       <JobSearchBar darkMode={darkMode} />
-      <JobsForYou /> {}
+      <JobsForYou darkMode={darkMode} /> {}
     </div>
   );
 };
