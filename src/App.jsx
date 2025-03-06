@@ -5,6 +5,7 @@ import Dashboard from "./Dashboard";
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
 
+
 const App = () => {
   const [darkMode, setDarkMode] = useState(false);
 
@@ -19,17 +20,19 @@ const App = () => {
   }, [darkMode]);
 
   return (
-    <Router>
-      <main>
-        <Routes>
-          <Route path="/" element={<LandingPage />} />
-          <Route path="/dashboard" element={<Dashboard darkMode={darkMode} toggleTheme={toggleTheme} />} />
-          <Route path="/signin" element={<SignIn />} />
-          <Route path="/signup" element={<SignUp />} />
-        </Routes>
-      </main>
-    </Router>
-  );
+      <Router>
+        <main style={{ display: "flex", justifyContent: "space-between" }}>
+          <div style={{ flex: 1 }}>
+            <Routes>
+              <Route path="/" element={<LandingPage />} />
+              <Route path="/dashboard" element={<Dashboard darkMode={darkMode} toggleTheme={toggleTheme} />} />
+              <Route path="/signin" element={<SignIn />} />
+              <Route path="/signup" element={<SignUp />} />
+            </Routes>
+          </div>
+        </main>
+      </Router>
+    );
 };
 
 export default App;
