@@ -1,9 +1,10 @@
 import React from 'react';
 
-function JobCard({ title, company, location, jobType, payRate, skills }) {
+function JobCard({ title, company, location, jobType, payRate, skills, darkMode }) {
   return (
     <div style={{
-      backgroundColor: 'white',
+      backgroundColor: darkMode ? '#2d3748' : 'white',  // Adjust for dark mode
+      color: darkMode ? '#fff' : '#000',  // Text color for dark mode
       borderRadius: '8px',
       padding: '15px',
       marginBottom: '15px',
@@ -12,8 +13,8 @@ function JobCard({ title, company, location, jobType, payRate, skills }) {
       <h3 style={{ margin: '0 0 10px 0', fontWeight: 'bold' }}>{title}</h3>
 
       <button style={{
-        backgroundColor: '#3b5998',
-        color: 'white',
+        backgroundColor: darkMode ? "#9F67E0" : "#4285f4",
+        color: darkMode ? "#1E1B29" : "#fff",
         border: 'none',
         padding: '8px 12px',
         borderRadius: '5px',
@@ -24,11 +25,12 @@ function JobCard({ title, company, location, jobType, payRate, skills }) {
         Apply Now
       </button>
 
-      <p style={{ margin: '10px 0', fontSize: '0.9em', color: '#555' }}><strong>{company}</strong></p>
-      <p style={{ margin: '0', fontSize: '0.9em', color: '#555' }}>{location}</p>
+      <p style={{ margin: '10px 0', fontSize: '0.9em', color: darkMode ? '#fff' : '#555' }}><strong>{company}</strong></p>
+      <p style={{ margin: '0', fontSize: '0.9em', color: darkMode ? '#fff' : '#555' }}>{location}</p>
 
       <p style={{
-        backgroundColor: '#e0e0e0',
+        backgroundColor: darkMode ? "white" : "#e0e0e0",
+        color: darkMode ? "black" : "#fff",
         padding: '5px',
         borderRadius: '5px',
         display: 'inline-block',
@@ -38,15 +40,15 @@ function JobCard({ title, company, location, jobType, payRate, skills }) {
         {jobType}
       </p>
 
-      <p style={{ margin: '5px 0', fontSize: '0.9em', color: '#555' }}><strong>Income:</strong> {payRate}</p>
+      <p style={{ margin: '5px 0', fontSize: '0.9em', color: darkMode ? '#fff' : '#555' }}><strong>Income:</strong> {payRate}</p>
 
       <div>
         <strong>Skills:</strong>
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '5px', marginTop: '5px' }}>
           {skills.map(skill => (
             <span key={skill} style={{
-              backgroundColor: '#3b5998',
-              color: 'white',
+              backgroundColor: darkMode ? "#9F67E0" : "#4285f4",
+              color: darkMode ? "#1E1B29" : "#fff",
               padding: '5px 8px',
               borderRadius: '5px',
               fontSize: '0.8em',
@@ -57,22 +59,23 @@ function JobCard({ title, company, location, jobType, payRate, skills }) {
         </div>
       </div>
 
-      <p style={{ marginTop: '10px', fontSize: '0.9em', color: '#555' }}><strong>Job Description</strong></p>
+      <p style={{ marginTop: '10px', fontSize: '0.9em', color: darkMode ? '#fff' : '#555' }}><strong>Job Description</strong></p>
     </div>
   );
 }
 
-function JobListings() {
+function JobListings({ darkMode }) {
   return (
     <div style={{
-      width: '400px', // Match "Jobs for You" box width
-      height: '550px', // Match expected height
+      width: '400px',
+      height: '550px',
       overflowY: 'auto',
       border: '1px solid #ccc',
       borderRadius: '8px',
       padding: '10px',
-      backgroundColor: 'white',
-      boxShadow: '0 4px 8px rgba(0,0,0,0.2)',
+      backgroundColor: darkMode ? '#1f2937' : 'white',  // Adjust for dark mode
+      color: darkMode ? '#fff' : '#000',  // Text color for dark mode
+      boxShadow: darkMode ? '0 4px 8px rgba(255, 255, 255, 0.2)' : '0 4px 8px rgba(0, 0, 0, 0.2)',
     }}>
       <h2 style={{ textAlign: 'left', margin: '10px', fontSize: '1.5em', fontWeight: 'bold' }}>Job Listings</h2>
 
@@ -84,6 +87,7 @@ function JobListings() {
         jobType="Full - Time"
         payRate="$55 per hour"
         skills={["Java", "Python", "C++", "Django", "React", "API", "Git"]}
+        darkMode={darkMode}
       />
       <JobCard
         title="Python Developer"
@@ -92,6 +96,7 @@ function JobListings() {
         jobType="Full - Time"
         payRate="$50 per hour"
         skills={["Python", "Flask", "Django", "SQL"]}
+        darkMode={darkMode}
       />
       <JobCard
         title="Data Scientist"
@@ -100,6 +105,7 @@ function JobListings() {
         jobType="Full - Time"
         payRate="$60 per hour"
         skills={["Python", "Machine Learning", "TensorFlow", "SQL"]}
+        darkMode={darkMode}
       />
       <JobCard
         title="Front-End Developer"
@@ -108,6 +114,7 @@ function JobListings() {
         jobType="Full - Time"
         payRate="$55 per hour"
         skills={["JavaScript", "React", "CSS", "HTML", "Redux"]}
+        darkMode={darkMode}
       />
       <JobCard
         title="Cybersecurity Engineer"
@@ -116,6 +123,7 @@ function JobListings() {
         jobType="Full - Time"
         payRate="$65 per hour"
         skills={["Security", "Penetration Testing", "Networking", "Python"]}
+        darkMode={darkMode}
       />
     </div>
   );
