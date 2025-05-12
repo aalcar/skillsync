@@ -16,9 +16,9 @@ const Header = ({ darkMode, toggleTheme }) => {
             fontFamily: 'Helvetica, sans-serif'
         }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-            <img src={darkMode ? logo : logolight} alt="SkillScalar Logo" style={{ width: "70px", height: "90px" }} />
+            <img src={darkMode ? logo : logolight} alt="Logo" style={{ width: "70px", height: "90px" }} />
                 <h1 style={{ fontSize: '2rem', fontWeight: '550', fontFamily: "'Poppins', sans-serif", background: 'linear-gradient(to right, #3b82f6, #9333ea)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', display: 'inline-block' }}>          
-                    SkillScalar
+                    SkillSync
                 </h1>
             </div>
       
