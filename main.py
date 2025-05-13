@@ -55,5 +55,5 @@ def scrape_keywords(req: JobRequest):
 
     df['technical_keywords'] = df['description'].apply(extract_keywords)
 
-    result = df[['title', 'company', 'location', 'technical_keywords']].fillna("").to_dict(orient="records")
+    result = df[['title', 'company', 'location', 'job_url', 'technical_keywords']].fillna("").to_dict(orient="records")
     return {"data": result}
