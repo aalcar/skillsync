@@ -1,41 +1,61 @@
-import React from 'react';
+import React from "react";
 
-function JobsForYou({ darkMode }) {
+function JobsForYou({ jobResults = [], darkMode }) {
+  if (jobResults.length === 0) return null;
+
   return (
-    <div style={{
-      width: '400px',
-      minHeight: '550px',
-      overflowY: 'auto',
-      border: '1px solid #ccc',
-      borderRadius: '8px',
-      padding: '10px',
-      backgroundColor: darkMode ? '#1f2937' : 'white',  // Adjust for dark mode
-      color: darkMode ? '#fff' : '#000',  // Text color for dark mode
-      boxShadow: darkMode ? '0 4px 8px rgba(255, 255, 255, 0.2)' : '0 4px 8px rgba(0, 0, 0, 0.2)',
-    }}>
-      <h2 style={{ textAlign: 'left', margin: '10px', fontSize: '1.5em', fontWeight: 'bold' }}>Jobs for You</h2>
-
-      {/* Example Job Listings */}
-      <div style={{ paddingBottom: "10px" }}>
-        <p><strong>Software Developer</strong></p>
-        <p>Indeed - Davis, CA</p>
-        <p>Full - Time</p>
-      </div>
-      <div style={{ paddingBottom: "10px" }}>
-        <p><strong>Python Developer</strong></p>
-        <p>LinkedIn - San Francisco, CA</p>
-        <p>Full - Time</p>
-      </div>
-      <div style={{ paddingBottom: "10px" }}>
-        <p><strong>Data Scientist</strong></p>
-        <p>Google - Mountain View, CA</p>
-        <p>Full - Time</p>
-      </div>
-      <div style={{ paddingBottom: "10px" }}>
-        <p><strong>UX/UI Designer</strong></p>
-        <p>Indeed - Davis, CA</p>
-        <p>Full - Time</p>
-      </div>
+    <div style={{ padding: "20px" }}>
+      <h3 style={{ color: darkMode ? "#fff" : "#000" }}>Jobs for you</h3>
+      <table style={{ width: "100%", borderCollapse: "collapse", marginTop: "10px" }}>
+        <thead>
+          <tr style={{ backgroundColor: darkMode ? "#374151" : "#e2e8f0" }}>
+            <th style={{ padding: "8px", borderBottom: "1px solid #ccc" }}>Title</th>
+            <th style={{ padding: "8px", borderBottom: "1px solid #ccc" }}>Company</th>
+            <th style={{ padding: "8px", borderBottom: "1px solid #ccc" }}>Location</th>
+            <th style={{ padding: "8px", borderBottom: "1px solid #ccc" }}>Apply Link</th>
+            <th style={{ padding: "8px", borderBottom: "1px solid #ccc" }}>Match %</th>
+          </tr>
+        </thead>
+        <tbody>
+          {jobResults.map((job, index) => (
+            <tr key={index}>
+              <td style={{ padding: "8px", borderBottom: "1px solid #ccc" }}>{job.title}</td>
+              <td style={{ padding: "8px", borderBottom: "1px solid #ccc" }}>{job.company}</td>
+              <td style={{ padding: "8px", borderBottom: "1px solid #ccc" }}>{job.location}</td>
+              <td style={{ padding: "8px", borderBottom: "1px solid #ccc" }}>
+                <a
+                  href={job.job_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    display: "inline-block",
+                    padding: "8px 16px",
+                    backgroundColor: darkMode ? "#9F67E0" : "#4285f4",
+                    color: darkMode ? "#1E1B29" : "#fff",
+                    borderRadius: "12px",
+                    fontWeight: "600",
+                    textDecoration: "none",
+                    fontSize: "0.875rem",
+                    transition: "all 0.2s ease-in-out",
+                    boxShadow: "0 2px 5px rgba(0,0,0,0.1)",
+                  }}
+                  onMouseOver={(e) => {
+                    e.target.style.transform = "scale(1.05)";
+                  }}
+                  onMouseOut={(e) => {
+                    e.target.style.transform = "scale(1)";
+                  }}
+                >
+                  Apply
+                </a>
+              </td>
+              <td style={{ padding: "8px", borderBottom: "1px solid #ccc" }}>
+                {job.match_percent !== undefined ? `${job.match_percent}%` : "—"}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }
