@@ -1,7 +1,9 @@
 # server/main.py
 
-from fastapi import FastAPI, Form
+from fastapi import FastAPI, Form, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
+from cli_pdf_parser import parse_pdf
 from pydantic import BaseModel
 import pandas as pd
 from jobspy import scrape_jobs
@@ -26,6 +28,27 @@ class JobRequest(BaseModel):
     location: str
     job_type: str
 
+@app.post("/upload-resume")
+async def upload_resume(file: UploadFile = File(...)):
+    try:
+        # Save uploaded file temporarily
+        with open("temp_resume.pdf", "wb") as f:
+            f.write(await file.read())
+
+        # Parse keywords from resume
+        resume_keywords = parse_pdf("temp_resume.pdf")
+
+        # Optional: sort by frequency
+        sorted_keywords = sorted(resume_keywords.items(), key=lambda x: -x[1])
+
+        return JSONResponse(content={
+            "keywords": sorted_keywords,
+            "total_keywords": sum(resume_keywords.values())
+        })
+
+    except Exception as e:
+        return JSONResponse(content={"error": str(e)}, status_code=500)
+    
 @app.post("/scrape")
 def scrape_keywords(req: JobRequest):
     if req.role not in technical_keywords_dict:

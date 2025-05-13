@@ -4,13 +4,14 @@ import { useDropzone } from "react-dropzone";
 import { UploadCloud } from "lucide-react";
 
 
-const PdfUploader = () => {
+const PdfUploader = ({ onUpload }) => {
   const [file, setFile] = useState(null);
 
   const onDrop = (acceptedFiles) => {
     const pdfFile = acceptedFiles[0];
     if (pdfFile) {
       setFile(pdfFile);
+      onUpload && onUpload(pdfFile);
     }
   };
 
@@ -34,9 +35,12 @@ const PdfUploader = () => {
       {file && (
         <div className="mt-4 text-center">
           <p className="text-sm font-semibold">{file.name}</p>
-          <Button variant="outline" className="mt-2" onClick={() => setFile(null)}>
+          <button
+            className="mt-2 px-4 py-1 text-sm font-medium border rounded"
+            onClick={() => setFile(null)}
+          >
             Remove
-          </Button>
+          </button>
         </div>
       )}
     </div>

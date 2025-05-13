@@ -6,34 +6,65 @@ function JobSearchForm({ darkMode }) {
   const [jobType, setJobType] = useState("");
   const [location, setLocation] = useState("");
   const [jobResults, setJobResults] = useState([]);
+  const [resumeKeywords, setResumeKeywords] = useState(new Set());
+
+  const computeMatch = (jobs, keywordsSet) => {
+    return jobs.map((job) => {
+      const keywords = job.technical_keywords || [];
+      const matched = keywords.filter((kw) => keywordsSet.has(kw));
+      const percent =
+        keywords.length > 0
+          ? ((matched.length / keywords.length) * 100).toFixed(2)
+          : 0;
+      return { ...job, match_percent: percent };
+    });
+  };
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
-  console.log("Fetching live data for:", jobTitle, jobType, location);
-
-  try {
-    const response = await fetch("http://localhost:8000/scrape", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            role: jobTitle,
-            job_type: jobType,
-            location: location,
-          }),
-        });
-
-        const data = await response.json();
-        if (data.data) {
-          setJobResults(data.data);
-        } else {
-          alert(data.error || "No jobs found");
-        }
-      } catch (error) {
-        console.error("Error:", error);
-        alert("Failed to fetch jobs");
+    e.preventDefault();
+    try {
+      const response = await fetch("http://localhost:8000/scrape", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          role: jobTitle,
+          job_type: jobType,
+          location: location,
+        }),
+      });
+      const data = await response.json();
+      if (data.data) {
+        const updatedJobs = resumeKeywords.size
+          ? computeMatch(data.data, resumeKeywords)
+          : data.data;
+        setJobResults(updatedJobs);
+      } else {
+        alert(data.error || "No jobs found");
       }
-    };
+    } catch (error) {
+      console.error("Error:", error);
+      alert("Failed to fetch jobs");
+    }
+  };
 
+  const handleUpload = async (file) => {
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      const response = await fetch("http://localhost:8000/upload-resume", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await response.json();
+      const keywordSet = new Set(data.keywords.map(([k]) => k));
+      setResumeKeywords(keywordSet);
+      setJobResults((prev) => computeMatch(prev, keywordSet));
+    } catch (error) {
+      console.error("Resume upload failed:", error);
+    }
+  };
 
   return (
     <>
@@ -54,12 +85,7 @@ function JobSearchForm({ darkMode }) {
           <select
             value={jobTitle}
             onChange={(e) => setJobTitle(e.target.value)}
-            style={{
-              padding: "10px",
-              border: "1px solid #ccc",
-              borderRadius: "4px",
-              flex: "1",
-            }}
+            style={{ padding: "10px", border: "1px solid #ccc", borderRadius: "4px", flex: "1" }}
           >
             <option value="">Job title, keywords, or company</option>
             <option value="Software Developer/Engineer">Software Developer/Engineer</option>
@@ -81,12 +107,7 @@ function JobSearchForm({ darkMode }) {
           <select
             value={jobType}
             onChange={(e) => setJobType(e.target.value)}
-            style={{
-              padding: "10px",
-              border: "1px solid #ccc",
-              borderRadius: "4px",
-              flex: "0.5",
-            }}
+            style={{ padding: "10px", border: "1px solid #ccc", borderRadius: "4px", flex: "0.5" }}
           >
             <option value="">Job Type</option>
             <option value="full-time">Full-time</option>
@@ -101,12 +122,7 @@ function JobSearchForm({ darkMode }) {
             placeholder="Location (eg. Davis, CA)"
             value={location}
             onChange={(e) => setLocation(e.target.value)}
-            style={{
-              padding: "10px",
-              border: "1px solid #ccc",
-              borderRadius: "4px",
-              flex: "1",
-            }}
+            style={{ padding: "10px", border: "1px solid #ccc", borderRadius: "4px", flex: "1" }}
           />
 
           <button
@@ -134,12 +150,11 @@ function JobSearchForm({ darkMode }) {
               fontSize: "11px",
             }}
           >
-            <PdfUploader />
+            <PdfUploader onUpload={handleUpload} />
           </button>
         </div>
       </form>
 
-      {/* Results Table */}
       {jobResults.length > 0 && (
         <div style={{ padding: "20px" }}>
           <h3 style={{ color: darkMode ? "#fff" : "#000" }}>Jobs for you</h3>
@@ -149,8 +164,8 @@ function JobSearchForm({ darkMode }) {
                 <th style={{ padding: "8px", borderBottom: "1px solid #ccc" }}>Title</th>
                 <th style={{ padding: "8px", borderBottom: "1px solid #ccc" }}>Company</th>
                 <th style={{ padding: "8px", borderBottom: "1px solid #ccc" }}>Location</th>
-                <th style={{ padding: "8px", borderBottom: "1px solid #ccc" }}>Keywords</th>
                 <th style={{ padding: "8px", borderBottom: "1px solid #ccc" }}>Apply Link</th>
+                <th style={{ padding: "8px", borderBottom: "1px solid #ccc" }}>Match %</th>
               </tr>
             </thead>
             <tbody>
@@ -159,7 +174,6 @@ function JobSearchForm({ darkMode }) {
                   <td style={{ padding: "8px", borderBottom: "1px solid #ccc" }}>{job.title}</td>
                   <td style={{ padding: "8px", borderBottom: "1px solid #ccc" }}>{job.company}</td>
                   <td style={{ padding: "8px", borderBottom: "1px solid #ccc" }}>{job.location}</td>
-                  <td style={{ padding: "8px", borderBottom: "1px solid #ccc" }}>{job.technical_keywords.join(", ")}</td>
                   <td style={{ padding: "8px", borderBottom: "1px solid #ccc" }}>
                     <a
                       href={job.job_url}
@@ -175,7 +189,7 @@ function JobSearchForm({ darkMode }) {
                         textDecoration: "none",
                         fontSize: "0.875rem",
                         transition: "all 0.2s ease-in-out",
-                        boxShadow: "0 2px 5px rgba(0,0,0,0.1)"
+                        boxShadow: "0 2px 5px rgba(0,0,0,0.1)",
                       }}
                       onMouseOver={(e) => {
                         e.target.style.transform = "scale(1.05)";
@@ -186,6 +200,9 @@ function JobSearchForm({ darkMode }) {
                     >
                       Apply
                     </a>
+                  </td>
+                  <td style={{ padding: "8px", borderBottom: "1px solid #ccc" }}>
+                    {job.match_percent !== undefined ? `${job.match_percent}%` : "—"}
                   </td>
                 </tr>
               ))}

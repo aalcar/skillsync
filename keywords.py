@@ -42,3 +42,9 @@ technical_keywords_dict = {
         "product roadmap", "agile", "user stories", "stakeholder management", "business analysis", "a/b testing", "kpis"
     ]
 }
+
+full_keywords = list(set(
+    kw
+    for keyword_list in technical_keywords_dict.values()
+    for kw in keyword_list
+))
