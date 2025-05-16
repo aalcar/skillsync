@@ -120,10 +120,9 @@ function JobSearchForm({ darkMode }) {
             }}
           >
             <option value="">Job Type</option>
-            <option value="full-time">Full-time</option>
-            <option value="part-time">Part-time</option>
+            <option value="fulltime">Full-time</option>
+            <option value="parttime">Part-time</option>
             <option value="contract">Contract</option>
-            <option value="temporary">Temporary</option>
             <option value="internship">Internship</option>
           </select>
 

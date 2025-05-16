@@ -25,3 +25,7 @@ dist-ssr
 
 # dont leak everything :)
 .env
+
+# i was getting annoyed at seeing vscode say i had 9k files to commit
+venv 
+__pycache__
