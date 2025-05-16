@@ -85,7 +85,12 @@ function JobSearchForm({ darkMode }) {
           <select
             value={jobTitle}
             onChange={(e) => setJobTitle(e.target.value)}
-            style={{ padding: "10px", border: "1px solid #ccc", borderRadius: "4px", flex: "1" }}
+            style={{
+              padding: "10px",
+              border: "1px solid #ccc",
+              borderRadius: "4px",
+              flex: "1",
+            }}
           >
             <option value="">Job title, keywords, or company</option>
             <option value="Software Developer/Engineer">Software Developer/Engineer</option>
@@ -107,7 +112,12 @@ function JobSearchForm({ darkMode }) {
           <select
             value={jobType}
             onChange={(e) => setJobType(e.target.value)}
-            style={{ padding: "10px", border: "1px solid #ccc", borderRadius: "4px", flex: "0.5" }}
+            style={{
+              padding: "10px",
+              border: "1px solid #ccc",
+              borderRadius: "4px",
+              flex: "0.5",
+            }}
           >
             <option value="">Job Type</option>
             <option value="full-time">Full-time</option>
@@ -122,7 +132,12 @@ function JobSearchForm({ darkMode }) {
             placeholder="Location (eg. Davis, CA)"
             value={location}
             onChange={(e) => setLocation(e.target.value)}
-            style={{ padding: "10px", border: "1px solid #ccc", borderRadius: "4px", flex: "1" }}
+            style={{
+              padding: "10px",
+              border: "1px solid #ccc",
+              borderRadius: "4px",
+              flex: "1",
+            }}
           />
 
           <button
@@ -169,42 +184,44 @@ function JobSearchForm({ darkMode }) {
               </tr>
             </thead>
             <tbody>
-              {jobResults.map((job, index) => (
-                <tr key={index}>
-                  <td style={{ padding: "8px", borderBottom: "1px solid #ccc" }}>{job.title}</td>
-                  <td style={{ padding: "8px", borderBottom: "1px solid #ccc" }}>{job.company}</td>
-                  <td style={{ padding: "8px", borderBottom: "1px solid #ccc" }}>{job.location}</td>
-                  <td style={{ padding: "8px", borderBottom: "1px solid #ccc" }}>
-                    <a
-                      href={job.job_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{
-                        display: "inline-block",
-                        padding: "8px 16px",
-                        backgroundColor: darkMode ? "#9F67E0" : "#4285f4",
-                        color: darkMode ? "#1E1B29" : "#fff",
-                        borderRadius: "12px",
-                        fontWeight: "600",
-                        textDecoration: "none",
-                        fontSize: "0.875rem",
-                        transition: "all 0.2s ease-in-out",
-                        boxShadow: "0 2px 5px rgba(0,0,0,0.1)",
-                      }}
-                      onMouseOver={(e) => {
-                        e.target.style.transform = "scale(1.05)";
-                      }}
-                      onMouseOut={(e) => {
-                        e.target.style.transform = "scale(1)";
-                      }}
-                    >
-                      Apply
-                    </a>
-                  </td>
-                  <td style={{ padding: "8px", borderBottom: "1px solid #ccc" }}>
-                    {job.match_percent !== undefined ? `${job.match_percent}%` : "—"}
-                  </td>
-                </tr>
+              {[...jobResults]
+                .sort((a, b) => parseFloat(b.match_percent) - parseFloat(a.match_percent))
+                .map((job, index) => (
+                  <tr key={index}>
+                    <td style={{ padding: "8px", borderBottom: "1px solid #ccc" }}>{job.title}</td>
+                    <td style={{ padding: "8px", borderBottom: "1px solid #ccc" }}>{job.company}</td>
+                    <td style={{ padding: "8px", borderBottom: "1px solid #ccc" }}>{job.location}</td>
+                    <td style={{ padding: "8px", borderBottom: "1px solid #ccc" }}>
+                      <a
+                        href={job.job_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{
+                          display: "inline-block",
+                          padding: "8px 16px",
+                          backgroundColor: darkMode ? "#9F67E0" : "#4285f4",
+                          color: darkMode ? "#1E1B29" : "#fff",
+                          borderRadius: "12px",
+                          fontWeight: "600",
+                          textDecoration: "none",
+                          fontSize: "0.875rem",
+                          transition: "all 0.2s ease-in-out",
+                          boxShadow: "0 2px 5px rgba(0,0,0,0.1)",
+                        }}
+                        onMouseOver={(e) => {
+                          e.target.style.transform = "scale(1.05)";
+                        }}
+                        onMouseOut={(e) => {
+                          e.target.style.transform = "scale(1)";
+                        }}
+                      >
+                        Apply
+                      </a>
+                    </td>
+                    <td style={{ padding: "8px", borderBottom: "1px solid #ccc" }}>
+                      {job.match_percent !== undefined ? `${job.match_percent}%` : "—"}
+                    </td>
+                  </tr>
               ))}
             </tbody>
           </table>

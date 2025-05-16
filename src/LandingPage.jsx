@@ -29,7 +29,7 @@ const LandingPage = () => {
           fontWeight: "550",
           fontFamily: "'Poppins', sans-serif"
         }}>
-          SkillScalar
+          SkillSync
         </h1>
         
         {/* "Go to Dashboard" Button */}
