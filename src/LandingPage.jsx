@@ -22,14 +22,14 @@ const LandingPage = () => {
         boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
         width: "400px"
       }}>
-        <img src={logo} alt="SkillScalar Logo" style={{ width: "180px", height: "200px" }} />
+        <img src={logo} alt="Logo" style={{ width: "180px", height: "200px" }} />
         <h1 style={{
           marginBottom: '2px',
           fontSize: "2rem",
           fontWeight: "550",
           fontFamily: "'Poppins', sans-serif"
         }}>
-          SkillScalar
+          SkillSync
         </h1>
         
         {/* "Go to Dashboard" Button */}
