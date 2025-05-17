@@ -66,6 +66,10 @@ function JobSearchForm({ darkMode }) {
     }
   };
 
+  const sortedJobResults = [...jobResults].sort((a, b) => {
+    return parseFloat(b.match_percent || 0) - parseFloat(a.match_percent || 0);
+  });
+
   return (
     <>
       <form onSubmit={handleSubmit}>
@@ -168,7 +172,7 @@ function JobSearchForm({ darkMode }) {
               </tr>
             </thead>
             <tbody>
-              {jobResults.map((job, index) => (
+              {sortedJobResults.map((job, index) => (
                 <tr key={index}>
                   <td style={{ padding: "8px", borderBottom: "1px solid #ccc" }}>{job.title}</td>
                   <td style={{ padding: "8px", borderBottom: "1px solid #ccc" }}>{job.company}</td>

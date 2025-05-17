@@ -56,8 +56,8 @@ def scrape_keywords(req: JobRequest):
 
     search_params = {
         "site_name": ["indeed", "linkedin", "zip_recruiter", "google"],
-        "search_term": f"{req.role} internship",
-        "google_search_term": f"{req.role} internship",
+        "search_term": f"{req.role} {req.job_type}",
+        "google_search_term": f"{req.role} {req.job_type}",
         "location": req.location,
         "results_wanted": 50,
         "hours_old": 72,
