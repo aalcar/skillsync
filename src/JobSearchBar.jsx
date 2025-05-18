@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-import PdfUploader from "./PDFUploader.jsx";
+import { doc, getDoc, setDoc } from "firebase/firestore";
+import { auth, db } from "./firebase";
+import { onAuthStateChanged } from "firebase/auth";
 
 function JobSearchForm({ darkMode }) {
   const [jobTitle, setJobTitle] = useState("");
@@ -19,9 +21,33 @@ function JobSearchForm({ darkMode }) {
       return { ...job, match_percent: percent };
     });
   };
+  
+  const loadResumeKeywordsFromFirestore = () => {
+    return new Promise((resolve, reject) => {
+      onAuthStateChanged(auth, async (user) => {
+        if (!user) {
+          console.warn("No user signed in. Cannot fetch resume keywords.");
+          resolve(new Set()); // return empty set if no user
+          return;
+        }
+  
+        try {
+          const docRef = doc(db, "users", user.uid);
+          const docSnap = await getDoc(docRef);
+          const keywords = docSnap.exists() ? docSnap.data().keywords || [] : [];
+          resolve(new Set(keywords));
+        } catch (error) {
+          console.error("Failed to fetch resume keywords:", error);
+          reject(error);
+        }
+      });
+    });
+  };
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+  
     try {
       const response = await fetch("http://localhost:8000/scrape", {
         method: "POST",
@@ -32,39 +58,52 @@ function JobSearchForm({ darkMode }) {
           location: location,
         }),
       });
+  
       const data = await response.json();
-      if (data.data) {
-        const updatedJobs = resumeKeywords.size
-          ? computeMatch(data.data, resumeKeywords)
-          : data.data;
-        setJobResults(updatedJobs);
-      } else {
+  
+      if (!data.data || data.data.length === 0) {
         alert(data.error || "No jobs found");
+        return;
       }
-    } catch (error) {
-      console.error("Error:", error);
-      alert("Failed to fetch jobs");
-    }
-  };
-
-  const handleUpload = async (file) => {
-    const formData = new FormData();
-    formData.append("file", file);
-
-    try {
-      const response = await fetch("http://localhost:8000/upload-resume", {
-        method: "POST",
-        body: formData,
-      });
-
-      const data = await response.json();
-      const keywordSet = new Set(data.keywords.map(([k]) => k));
+  
+      const keywordSet = await loadResumeKeywordsFromFirestore();
+  
+      const updatedJobs = keywordSet.size
+        ? computeMatch(data.data, keywordSet)
+        : data.data;
+  
       setResumeKeywords(keywordSet);
-      setJobResults((prev) => computeMatch(prev, keywordSet));
+      setJobResults(updatedJobs);
+  
+      // Save job keywords to Firestore
+      const allJobKeywords = new Set();
+      data.data.forEach((job) => {
+        if (Array.isArray(job.technical_keywords)) {
+          job.technical_keywords.forEach((kw) => allJobKeywords.add(kw));
+        }
+      });
+  
+      onAuthStateChanged(auth, async (user) => {
+        if (!user) {
+          console.warn("User not signed in. Skipping keyword save.");
+          return;
+        }
+  
+        try {
+          const docRef = doc(db, "users", user.uid);
+          await setDoc(docRef, { job_keywords: Array.from(allJobKeywords) }, { merge: true });
+          console.log("✅ Saved job keywords:", Array.from(allJobKeywords));
+        } catch (err) {
+          console.error("❌ Failed to save job keywords:", err.message);
+        }
+      });
+  
     } catch (error) {
-      console.error("Resume upload failed:", error);
+      console.error("Error fetching jobs:", error);
+      alert("Failed to fetch jobs. Try again.");
     }
   };
+  
 
   return (
     <>
@@ -151,20 +190,6 @@ function JobSearchForm({ darkMode }) {
             }}
           >
             Search
-          </button>
-        </div>
-
-        <div style={{ textAlign: "center", marginTop: "15px" }}>
-          <button
-            style={{
-              border: "none",
-              background: "none",
-              color: darkMode ? "#9F67E0" : "#4285f4",
-              cursor: "pointer",
-              fontSize: "11px",
-            }}
-          >
-            <PdfUploader onUpload={handleUpload} />
           </button>
         </div>
       </form>
