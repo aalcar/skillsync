@@ -1,18 +1,18 @@
-# pip install -U python-jobspy
+# Add these code blocks if you're running it in Google colab
+# ! pip install -U python-jobspy
+# ! pip install nltk
 
+import nltk
 import csv
 import pandas as pd
 from jobspy import scrape_jobs
-import nltk
-from nltk.tokenize import word_tokenize
-
-# Download necessary NLTK data
-nltk.download('punkt')
-# Download the 'punkt_tab' data package
-nltk.download('punkt_tab')
+# our cool keyword extractor :)
+from keyword_extractor import extract_keywords
 
 # list of technical keywords
 from keywords import technical_keywords_dict
+
+nltk.download('punkt')
 
 search_params = {
     "site_name": ["indeed","linkedin", "zip_recruiter", "google"],
@@ -45,21 +45,9 @@ else:
 jobs = scrape_jobs(**search_params)
 df = pd.DataFrame(jobs)
 
-# Function to extract technical keywords from job description
-def extract_technical_keywords(description, role_keywords):
-    # To check that the Job description has a string and is not empty.
-    if isinstance(description, str):
-        words = word_tokenize(description.lower())  # convert to lowercase
-        # To take out technical keywords present in a description.
-        keywords = [word for word in words if word in role_keywords]
-        return keywords
-    else:
-        # If the description is empty returns an empty list. --> we may later change this to remove that data.
-        return []
-
 # using function on the description column.
 role_keywords = technical_keywords_dict[selected_role]
-df['technical_keywords'] = df['description'].apply(lambda x: extract_technical_keywords(x, role_keywords))
+df['technical_keywords'] = df['description'].apply(lambda x: extract_keywords(x, role_keywords))
 
 # Dictionary with job_id and technical keyword present.
 job_keywords_dict = df[['id', 'technical_keywords']].set_index('id').to_dict()['technical_keywords']
@@ -74,8 +62,8 @@ job_info_df = df[['id', 'site', 'job_url', 'title', 'company', 'location', 'date
 final_df = pd.merge(job_info_df, job_keywords_df, left_on='id', right_on='job_id', how='left')
 
 # Save the results to a CSV
-final_df.to_csv(f'{selected_role.replace("/", "_")}_job_keywords.csv', index=False)
+final_df.to_csv(f'{selected_role.replace("/", "_").replace(" ", "_").lower()}_job_keywords.csv', index=False)
 
-print(f"CSV for {selected_role} created successfully: {selected_role.replace('/', '_')}_job_keywords.csv")
+print(f"CSV for {selected_role} created successfully: {selected_role.replace('/', '_').replace(' ', '_').lower()}_job_keywords.csv")
 
 print(final_df.head(30))
