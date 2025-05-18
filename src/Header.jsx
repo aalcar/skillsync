@@ -1,8 +1,7 @@
 import React from "react";
 import { Moon, Sun } from "lucide-react";
 import { Link } from "react-router-dom";
-import logo from "./logo.jpg";
-import logolight from "./logolight.jpg";
+import logo from "./assets/logo.png";
 
 const Header = ({ darkMode, toggleTheme }) => {
     return (
@@ -16,7 +15,7 @@ const Header = ({ darkMode, toggleTheme }) => {
             fontFamily: 'Helvetica, sans-serif'
         }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
-            <img src={darkMode ? logo : logolight} alt="Logo" style={{ width: "70px", height: "90px" }} />
+            <img src={logo} alt="Logo" style={{ width: "80px", height: "90px" }} />
                 <h1 style={{ fontSize: '2rem', fontWeight: '550', fontFamily: "'Poppins', sans-serif", background: 'linear-gradient(to right, #3b82f6, #9333ea)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', display: 'inline-block' }}>          
                     SkillSync
                 </h1>
