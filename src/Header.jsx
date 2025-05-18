@@ -1,6 +1,7 @@
 import React from "react";
 import { Moon, Sun } from "lucide-react";
 import { Link } from "react-router-dom";
+import SignOut from "./SignOut";
 import logo from "./assets/logo.png";
 
 const Header = ({ darkMode, toggleTheme }) => {
@@ -21,13 +22,19 @@ const Header = ({ darkMode, toggleTheme }) => {
                 </h1>
             </div>
       
-            <nav style={{ display: 'flex', gap: '40px' }}>
-                <a href="#" style={{ color: darkMode ? "#f8f9fa" : "#374151", textDecoration: 'none', fontSize: '1.0rem' }}>Home</a>
-                <a href="#" style={{ color: darkMode ? "#f8f9fa" : "#374151", textDecoration: 'none', fontSize: '1.0rem' }}>Recommendations</a>
-                <a href="#" style={{ color: darkMode ? "#f8f9fa" : "#374151", textDecoration: 'none', fontSize: '1.0rem' }}>Resume Analyzer</a>
+            <nav style={{ display: 'flex', gap: '40px', alignItems: 'center', marginRight: '40px'}}>
+                <Link to="/jobs" style={{ color: darkMode ? "#f8f9fa" : "#374151", textDecoration: 'none', fontSize: '1.0rem' }}>
+                    Jobs
+                </Link>
+                <Link to="/recommendations" style={{ color: darkMode ? "#f8f9fa" : "#374151", textDecoration: 'none', fontSize: '1.0rem' }}>
+                    Recommendations
+                </Link>
+                <Link to="/profile" style={{ color: darkMode ? "#f8f9fa" : "#374151", textDecoration: 'none', fontSize: '1.0rem' }}>
+                    Profile
+                </Link>
             </nav>
 
-            <div style={{ display: 'flex', gap: '10px', alignItems: 'left', marginRight: '15px' }}>
+            <div style={{ display: 'flex', gap: '10px', alignItems: 'left', marginRight: '30px' }}>
                 <button onClick={toggleTheme} style={{
                     width: '50px',
                     height: '50px',
@@ -41,12 +48,7 @@ const Header = ({ darkMode, toggleTheme }) => {
                 }}>
                     {darkMode ? <Sun color="#9F67E0" size={25} /> : <Moon color="#374151" size={25} />}
                 </button>
-                <Link to="/signup">
-                    <button type="submit" style={{ padding: '10px 20px', backgroundColor: darkMode ? "#1f2937" : "#fff", color: darkMode ? " #9F67E0" : "#4285f4", border: darkMode ? "2px solid #9F67E0" : "2px solid #4285f4",  borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}>Sign up</button>
-                </Link>
-                <Link to="/signin">
-                    <button type="submit" style={{ padding: '10px 20px', backgroundColor: darkMode ? "#1f2937" : "#fff", color: darkMode ? " #9F67E0" : "#4285f4", border: darkMode ? "2px solid #9F67E0" : "2px solid #4285f4",  borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}>Sign in</button>
-                </Link>
+                <SignOut darkMode={darkMode} ></SignOut>
             </div>
         </header>
     )

@@ -1,8 +1,6 @@
 import React from "react";
 import Header from "./Header";
 import JobSearchBar from "./JobSearchBar";
-import JobsForYou from "./JobsForYou";
-import JobListings from "./JobListings";
 
 const Dashboard = ({ darkMode, toggleTheme }) => {
   return (
