@@ -3,7 +3,7 @@
 from fastapi import FastAPI, Form, File, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
-from cli_pdf_parser import parse_pdf
+from pdf_parser import parse_pdf
 from pydantic import BaseModel
 import pandas as pd
 from jobspy import scrape_jobs
