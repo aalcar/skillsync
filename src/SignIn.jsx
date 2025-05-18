@@ -16,7 +16,7 @@ const SignIn = () => {
 
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      navigate('/dashboard');
+      navigate('/profile');
     // make the error message not be goofy firebase errors 
     } catch (err) {
       // default msg if switch falls through everything
@@ -35,7 +35,7 @@ const SignIn = () => {
       }
 
       setError(msg);
-        }
+    }
   };
 
   return (

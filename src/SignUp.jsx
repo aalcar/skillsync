@@ -10,6 +10,34 @@ const SignUp = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+  const handleLogin = async (e) => {
+      e.preventDefault();
+      setError('');
+  
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+        navigate('/profile');
+      // make the error message not be goofy firebase errors 
+      } catch (err) {
+        // default msg if switch falls through everything
+        let msg = "Something went wrong";
+  
+        switch (err.code) {
+          case "auth/invalid-email":
+            msg = "Please enter a valid email.";
+            break;
+          case "auth/user-not-found":
+            msg = "No account with that email.";
+            break;
+          case "auth/wrong-password":
+            msg = "Incorrect password.";
+            break;
+        }
+  
+        setError(msg);
+      }
+    };
+
   const handleSignUp = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -20,7 +48,7 @@ const SignUp = () => {
       // mildly annoying that it requires an email but oh well
       const userCred = await createUserWithEmailAndPassword(auth, email, password);
       console.log("Signed up:", userCred.user);
-      navigate('/dashboard');
+      navigate('/profile');
       // make the error message not be goofy firebase errors 
     } catch (err) {
       // default msg if switch falls through everything
@@ -39,9 +67,10 @@ const SignUp = () => {
         case "auth/wrong-password":
           msg = "Incorrect password.";
           break;
-  }
+        }
 
-  setError(msg);
+      setError(msg);
+      handleLogin();
     }
 
     setLoading(false);

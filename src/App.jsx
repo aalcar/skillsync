@@ -5,6 +5,7 @@ import Dashboard from "./Dashboard";
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
 import RecommenderPage from "./RecommenderPage";
+import ProfilePage from "./ProfilePage";
 
 const App = () => {
   const [darkMode, setDarkMode] = useState(false);
@@ -27,6 +28,7 @@ const App = () => {
               <Route path="/" element={<LandingPage />} />
               <Route path="/jobs" element={<Dashboard darkMode={darkMode} toggleTheme={toggleTheme} />} />
               <Route path="/recommendations" element={<RecommenderPage darkMode={darkMode} toggleTheme={toggleTheme} />} />
+              <Route path="/profile" element={<ProfilePage darkMode={darkMode} toggleTheme={toggleTheme} />} />
               <Route path="/signin" element={<SignIn />} />
               <Route path="/signup" element={<SignUp />} />
             </Routes>

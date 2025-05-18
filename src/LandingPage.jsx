@@ -34,7 +34,24 @@ const LandingPage = () => {
         
         {/* "Go to Dashboard" Button */}
         <button 
-          onClick={() => navigate("/jobs")} 
+          onClick={() => navigate("/signin")} 
+          style={{
+            padding: "10px 20px",
+            backgroundColor: "#9333ea",
+            color: "#fff",
+            border: "none",
+            borderRadius: "4px",
+            cursor: "pointer",
+            fontWeight: "bold",
+            marginTop: "20px",
+            marginRight: "10px"
+          }}
+        >
+          Sign In
+        </button>
+
+        <button 
+          onClick={() => navigate("/signup")} 
           style={{
             padding: "10px 20px",
             backgroundColor: "#9333ea",
@@ -46,7 +63,7 @@ const LandingPage = () => {
             marginTop: "20px"
           }}
         >
-          Go to Dashboard
+          Sign Up
         </button>
       </div>
     </div>
