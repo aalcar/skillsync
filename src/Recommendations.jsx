@@ -33,6 +33,7 @@ export default function Recommendations() {
           const keywords = docSnap.data().keywords || [];
           const jobKeywords = docSnap.data().job_keywords || [];
           setResumeKeywords(keywords);
+          console.log("📦 Firestore keywords:", keywords);
 
           const response = await fetch("http://localhost:8000/skill-recommendations", {
             method: "POST",
@@ -74,22 +75,6 @@ export default function Recommendations() {
         <p className="text-center text-gray-500">Loading personalized recommendations...</p>
       ) : (
         <RecommendationDisplay rawText={recommendations} />
-      )}
-  
-      {resumeKeywords.length > 0 && (
-        <div className="mt-8">
-          <h4 className="font-semibold text-gray-700 mb-2">Resume Keywords Used:</h4>
-          <div className="flex flex-wrap gap-2">
-            {resumeKeywords.map((kw, idx) => (
-              <span
-                key={idx}
-                className="px-3 py-1 text-sm rounded-full bg-gradient-to-r from-purple-400 to-blue-500 text-white font-medium shadow-sm"
-              >
-                {kw}
-              </span>
-            ))}
-          </div>
-        </div>
       )}
     </div>
   );  
