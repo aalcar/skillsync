@@ -1,8 +1,11 @@
 # server/main.py
 
-from fastapi import FastAPI, Form, File, UploadFile
+from fastapi import FastAPI, Form, File, UploadFile, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+from dotenv import load_dotenv
+import os
+import requests
 from pdf_parser import parse_pdf
 from pydantic import BaseModel
 import pandas as pd
@@ -13,6 +16,9 @@ from keywords import technical_keywords_dict
 
 nltk.download('punkt')
 
+# start stuff
+load_dotenv()
+API_KEY = os.getenv("OPENROUTER_API_KEY")
 app = FastAPI()
 
 # Allow frontend requests
@@ -80,3 +86,44 @@ def scrape_keywords(req: JobRequest):
 
     result = df[['title', 'company', 'location', 'job_url', 'technical_keywords']].fillna("").to_dict(orient="records")
     return {"data": result}
+
+# Request model
+class SkillRequest(BaseModel):
+    skill: str
+    context: str
+
+# Endpoint
+@app.post("/skill-advice")
+def get_skill_advice(req: SkillRequest):
+    if not API_KEY:
+        raise HTTPException(status_code=500, detail="Missing OpenRouter API key")
+
+    prompt = f"""
+    You are an AI mentor that helps users improve their technical skills.
+    Here's some helpful background for the model:
+    {req.context}
+
+    The user wants to improve in {req.skill}. Give them a step-by-step, motivating plan to level up.
+    """
+
+    headers = {
+        "Authorization": f"Bearer {API_KEY}",
+        "Content-Type": "application/json"
+    }
+
+    payload = {
+        "model": "mistralai/mistral-7b-instruct",  # or use "meta-llama/llama-3-8b-instruct"
+        "messages": [
+            {"role": "system", "content": "You are a helpful and encouraging AI mentor that gives users step-by-step advice on how to improve their skills."},
+            {"role": "user", "content": prompt}
+        ]
+    }
+
+    res = requests.post("https://openrouter.ai/api/v1/chat/completions", json=payload, headers=headers)
+
+    if res.status_code != 200:
+        raise HTTPException(status_code=res.status_code, detail=res.text)
+
+    return {
+        "advice": res.json()["choices"][0]["message"]["content"]
+    }

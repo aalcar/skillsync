@@ -34,7 +34,7 @@ const LandingPage = () => {
         
         {/* "Go to Dashboard" Button */}
         <button 
-          onClick={() => navigate("/dashboard")} 
+          onClick={() => navigate("/jobs")} 
           style={{
             padding: "10px 20px",
             backgroundColor: "#9333ea",

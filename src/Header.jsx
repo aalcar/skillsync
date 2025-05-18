@@ -22,9 +22,12 @@ const Header = ({ darkMode, toggleTheme }) => {
             </div>
       
             <nav style={{ display: 'flex', gap: '40px' }}>
-                <a href="#" style={{ color: darkMode ? "#f8f9fa" : "#374151", textDecoration: 'none', fontSize: '1.0rem' }}>Home</a>
-                <a href="#" style={{ color: darkMode ? "#f8f9fa" : "#374151", textDecoration: 'none', fontSize: '1.0rem' }}>Recommendations</a>
-                <a href="#" style={{ color: darkMode ? "#f8f9fa" : "#374151", textDecoration: 'none', fontSize: '1.0rem' }}>Resume Analyzer</a>
+                <Link to="/jobs" style={{ color: darkMode ? "#f8f9fa" : "#374151", textDecoration: 'none', fontSize: '1.0rem' }}>
+                    Jobs
+                </Link>
+                <Link to="/recommendations" style={{ color: darkMode ? "#f8f9fa" : "#374151", textDecoration: 'none', fontSize: '1.0rem' }}>
+                    Recommendations
+                </Link>
             </nav>
 
             <div style={{ display: 'flex', gap: '10px', alignItems: 'left', marginRight: '15px' }}>
