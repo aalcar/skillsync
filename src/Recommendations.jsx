@@ -31,12 +31,12 @@ export default function Recommendations({ resumeKeywords }) {
             body: formData,
         });
 
-        const data = await response.json();
-        const keywordSet = new Set(data.keywords.map(([k]) => k));
-        setResumeKeywords(keywordSet);
-        setJobResults((prev) => computeMatch(prev, keywordSet));
+            const data = await response.json();
+            const keywordSet = new Set(data.keywords.map(([k]) => k));
+            setResumeKeywords(keywordSet);
+            setJobResults((prev) => computeMatch(prev, keywordSet));
         } catch (error) {
-        console.error("Resume upload failed:", error);
+            console.error("Resume upload failed:", error);
         }
     };
 
