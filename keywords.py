@@ -43,4 +43,8 @@ technical_keywords_dict = {
     ]
 }
 
-full_keywords = [keyword for keywords in technical_keywords_dict.values() for keyword in keywords]
+full_keywords = list(set(
+    kw
+    for keyword_list in technical_keywords_dict.values()
+    for kw in keyword_list
+))
