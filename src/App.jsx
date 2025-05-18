@@ -6,7 +6,6 @@ import SignIn from "./SignIn";
 import SignUp from "./SignUp";
 import RecommenderPage from "./RecommenderPage";
 
-
 const App = () => {
   const [darkMode, setDarkMode] = useState(false);
 
